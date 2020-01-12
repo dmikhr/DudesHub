@@ -34,3 +34,6 @@
 
 # Ignore RubyMine folder
 .idea
+
+# VCR gem recordings
+/spec/cassettes/

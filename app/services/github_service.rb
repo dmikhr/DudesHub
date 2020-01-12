@@ -1,17 +1,12 @@
 # docs: https://octokit.github.io/octokit.rb/Octokit/Client/Gists.html
 # https://octokit.github.io/octokit.rb/Octokit/Client/PullRequests.html
 # gs = GithubService.new
-# gs.call
 
 class GithubService
-  attr_reader: :repos
+  attr_reader :repos
 
   def initialize
     @client = octokit_client
-  end
-
-  def call
-    @result = @client.repositories
   end
 
   def get_user_repos
@@ -37,21 +32,22 @@ class GithubService
   # https://octokit.github.io/octokit.rb/Octokit/Client/PullRequests.html#pull_request-instance_method
   # Octokit.pull_request('rails/rails', 42, :state => 'closed')
   # :url, :id, :state, :number, :title
-  def get_pull_request(repo_name, id)
-    @client.pull_request(repo_name, id)
+  def get_pull_request(repo_full_name, pull_request_id)
+    @client.pull_request(repo_full_name, pull_request_id)
   end
 
   # https://developer.github.com/v3/guides/working-with-comments/
   # https://developer.github.com/v3/issues/comments/#create-a-comment
   # https://octokit.github.io/octokit.rb/Octokit/Client/Issues.html#add_comment-instance_method
-  def create_pull_request_comment(repo_full_name, comment)
+  def create_pull_request_comment(repo_full_name, pull_request_id, comment)
     # comment = 'https://camo.githubusercontent.com/097ad4338d515251c51ef24d9416e554c469b8b9/687474703a2f2f6b6872616d74736f762e6e65742f66696c65732f64756465735f646966662e7376673f73616e6974697a653d74727565'
 
     # Issue comments in pull request https://stackoverflow.com/questions/16744069/create-comment-on-pull-request
-    repo = find_repo_by_name(repo_full_name)
-    comments_url = repo[:_links][:comments]
+    pull_request = get_pull_request(repo_full_name, pull_request_id)
+
+    comments_url = pull_request[:_links][:comments]
     # sample comments_url: https://api.github.com/repos/dmikhr/test_repo_dude/issues/1/comments
-    pull_request_issue_id = comments_url.split('/')[-2]
+    pull_request_issue_id = comments_url[:href].split('/')[-2]
 
     @client.add_comment(repo_full_name, pull_request_issue_id, comment)
   end
