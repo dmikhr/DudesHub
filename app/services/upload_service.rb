@@ -3,9 +3,8 @@ require 'stringio'
 
 class UploadService
   BUCKET_FOLDER = 'dudeshub'
-  AWS_FNAME = 'dudesgl_file777.svg'
+  AWS_FNAME = 'dudesgl_file.svg'
 
-  # maybe will be replaced with a string of svg code
   def initialize(data = '')
     # @data = data
     # emulate input from DudeGL (svg string)
