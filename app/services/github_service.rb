@@ -52,6 +52,12 @@ class GithubService
     @client.add_comment(repo_full_name, pull_request_issue_id, comment)
   end
 
+  def get_diff(pull_request)
+    # https://github.com/dmikhr/test_repo_dude/pull/1.diff
+    diff_url = pull_request[:diff_url]
+    DownloadService.call(diff_url)
+  end
+
   private
 
   def octokit_client

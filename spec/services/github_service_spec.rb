@@ -35,15 +35,20 @@ RSpec.describe GithubService, type: :service do
 
     it '#get_pull_request', vcr: vcr_options do
       # fetch first pull request
-      pull_requests = github_service.get_pull_request('dmikhr/test_repo_dude', 1)
-      expect(pull_requests[:id].class).to be Integer
-      expect(pull_requests[:url].start_with?('https://api.github.com')).to be_truthy
+      pull_request = github_service.get_pull_request('dmikhr/test_repo_dude', 1)
+      expect(pull_request[:id].class).to be Integer
+      expect(pull_request[:url].start_with?('https://api.github.com')).to be_truthy
     end
 
     it '#create_pull_request_comment', vcr: vcr_options do
       comment = github_service.create_pull_request_comment('dmikhr/test_repo_dude', 1, 'some comment')
       expect(comment[:id].class).to be Integer
       expect(comment[:url].start_with?('https://api.github.com')).to be_truthy
+    end
+
+    it '#get_diff', vcr: vcr_options do
+      pull_requests = github_service.get_pull_request('dmikhr/test_repo_dude', 1)
+      expect(github_service.get_diff(pull_requests).class).to be String
     end
   end
 end
