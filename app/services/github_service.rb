@@ -9,8 +9,8 @@ class GithubService
     @client = octokit_client
   end
 
-  def get_user_repos
-    @repos = @client.repositories
+  def get_user_repos(login)
+    @repos = @client.repositories(login)
   end
 
   def repos_list
@@ -56,6 +56,10 @@ class GithubService
     # https://github.com/dmikhr/test_repo_dude/pull/1.diff
     diff_url = pull_request[:diff_url]
     DownloadService.call(diff_url)
+  end
+
+  def user_login
+    @client.user[:login]
   end
 
   private

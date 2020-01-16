@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    title DudesHub
+    = csrf_meta_tags
+    = csp_meta_tag
+    = action_cable_meta_tag
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  body
+    = render 'shared/nav'
+    p class="notice"
+      = notice
+    p class="alert"
+      = alert
+    = yield

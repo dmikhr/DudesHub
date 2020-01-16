@@ -1,5 +1,4 @@
 require 'aws-sdk-s3'
-require 'stringio'
 
 class UploadService
   BUCKET_FOLDER = 'dudeshub'

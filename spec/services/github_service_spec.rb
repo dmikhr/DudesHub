@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe GithubService, type: :service do
   let!(:github_service) { GithubService.new }
-  let!(:repos) { github_service.get_user_repos }
+  let(:login) { github_service.user_login }
+  let!(:repos) { github_service.get_user_repos(login) }
 
   describe 'GithubService' do
     # https://relishapp.com/vcr/vcr/v/2-9-3/docs/record-modes/new-episodes
