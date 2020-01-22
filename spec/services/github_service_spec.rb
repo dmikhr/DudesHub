@@ -28,6 +28,11 @@ RSpec.describe GithubService, type: :service do
       expect(repo[:id].class).to be Integer
     end
 
+    it '#find_repo_by_id', vcr: vcr_options do
+      repo = github_service.find_repo_by_id(233369239)
+      expect(repo[:name]).to eq 'test_repo_dude'
+    end
+
     it '#get_pull_requests', vcr: vcr_options do
       pull_requests = github_service.get_pull_requests('dmikhr/test_repo_dude')
       expect(pull_requests.first[:id].class).to be Integer

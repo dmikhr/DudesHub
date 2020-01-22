@@ -23,6 +23,12 @@ class GithubService
     repo.first unless repo.empty?
   end
 
+  def find_repo_by_id(id)
+    # potentially useful keys: :full_name, :id, :private, [:owner][:login], :description, :html_url
+    repo = @repos.select { |repo| repo[:id] == id }
+    repo.first unless repo.empty?
+  end
+
   # get a list of open pull request for a given repo
   # https://octokit.github.io/octokit.rb/Octokit/Client/PullRequests.html#pull_requests-instance_method
   def get_pull_requests(repo_full_name)
