@@ -14,16 +14,5 @@ RSpec.describe GitDiffService, type: :service do
       expect(git_diff_service.call.first.class).to be Hash
       expect(git_diff_service.call.first.keys.sort).to be == %i[old_name new_name status].sort
     end
-
-    it '#renamed', vcr: vcr_options do
-      git_diff_service.call
-      expect(git_diff_service.renamed_files.class).to be Array
-      expect(git_diff_service.renamed_files).to_not be_empty
-
-      expect(git_diff_service.renamed_files.first.class).to be Hash
-      expect(git_diff_service.renamed_files.first.keys.sort).to be == %i[old_name new_name status].sort
-
-      expect(git_diff_service.renamed_files.first[:status]).to be :renamed
-    end
   end
 end

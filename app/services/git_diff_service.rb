@@ -19,10 +19,6 @@ class GitDiffService
     @diff_data = @patches.map { |patch| fname_diff(patch) }
   end
 
-  def renamed_files
-    @diff_data.select { |item| item[:status] == :renamed }
-  end
-
   private
 
   # split diff lines into separate patches for each file
