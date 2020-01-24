@@ -1,14 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe OauthCallbacksController, type: :controller do
-  before do
-    @request.env["devise.mapping"] = Devise.mappings[:user]
-  end
+  before { @request.env["devise.mapping"] = Devise.mappings[:user] }
 
   describe 'Github' do
-    before { @request.env['omniauth.auth'] = mock_auth(:github, 'new@user.com') }
+    before { @request.env['omniauth.auth'] = mock_auth_github('new@user.com') }
 
-    let(:oauth_data) { mock_auth(:github, 'new@user.com') }
+    let(:oauth_data) { mock_auth_github('new@user.com') }
 
     it 'finds user from oauth data' do
       allow(request.env).to receive(:[]).and_call_original
@@ -50,7 +48,7 @@ RSpec.describe OauthCallbacksController, type: :controller do
     end
 
     context 'has no user email' do
-      before { @request.env['omniauth.auth'] = mock_auth(:github, email: nil) }
+      before { @request.env['omniauth.auth'] = mock_auth_github(email: nil) }
 
       it 'redirects to submit email form' do
         get :github

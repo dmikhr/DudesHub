@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe FindForOauth, type: :service do
   let!(:user) { create(:user) }
-  let(:auth) { mock_auth(:github, user.email) }
+  let(:auth) { mock_auth_github(user.email) }
   let(:user_auth) { create(:authorization, user: user) }
   subject { FindForOauth.new }
 
@@ -15,7 +15,7 @@ RSpec.describe FindForOauth, type: :service do
 
   context 'user has not authorization' do
     context 'user already exists' do
-      let(:auth) { mock_auth(:github, user.email) }
+      let(:auth) { mock_auth_github(user.email) }
 
       it 'does not create new user' do
         expect {subject.call(auth)}.to_not change(User, :count)
@@ -28,7 +28,7 @@ RSpec.describe FindForOauth, type: :service do
       it 'creates authorization with provider and uid' do
         authorization = subject.call(auth).authorizations.first
 
-        expect(authorization.provider).to eq auth.provider
+        expect(authorization.provider).to eq auth.provider.to_s
         expect(authorization.uid).to eq auth.uid
       end
 
@@ -38,7 +38,7 @@ RSpec.describe FindForOauth, type: :service do
     end
 
     context 'user does not exist' do
-      let(:auth) { mock_auth(:github, 'new@user.com') }
+      let(:auth) { mock_auth_github('new@user.com') }
 
       it 'creates new user' do
         expect {subject.call(auth)}.to change(User, :count).by(1)
@@ -61,7 +61,7 @@ RSpec.describe FindForOauth, type: :service do
       it 'creates authorization with provider and uid' do
         authorization = subject.call(auth).authorizations.first
 
-        expect(authorization.provider).to eq auth.provider
+        expect(authorization.provider).to eq auth.provider.to_s
         expect(authorization.uid).to eq auth.uid
       end
     end

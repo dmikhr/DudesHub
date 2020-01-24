@@ -1,10 +1,9 @@
 module OmniauthMacros
-  def mock_auth(provider, email)
-    # для корректной отработки записи вида mock_auth(:github, email: nil)
+  def mock_auth_github(email)
     email = email[0] if email.class == Hash
 
-    OmniAuth.config.mock_auth[provider] = OmniAuth::AuthHash.new({
-      'provider' => provider.to_s,
+    OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new({
+      'provider' => :github,
       'uid' => '123545',
       'info' => { 'email' => email }
     })
