@@ -1,20 +1,12 @@
 # docs: https://octokit.github.io/octokit.rb/Octokit/Client/Gists.html
 # https://octokit.github.io/octokit.rb/Octokit/Client/PullRequests.html
-# gs = GithubService.new
 
 class GithubService
   attr_reader :repos
 
   def initialize
     @client = octokit_client
-  end
-
-  def get_user_repos(login)
-    @repos = @client.repositories(login)
-  end
-
-  def repos_list
-    @repos.map { |repo| [repo[:name], repo[:full_name], repo[:id]] }
+    @repos = @client.repositories(user_login)
   end
 
   def find_repo_by_name(name)

@@ -2,24 +2,13 @@ require 'rails_helper'
 
 RSpec.describe GithubService, type: :service do
   let!(:github_service) { GithubService.new }
-  let(:login) { github_service.user_login }
-  let!(:repos) { github_service.get_user_repos(login) }
 
   describe 'GithubService' do
-    # https://relishapp.com/vcr/vcr/v/2-9-3/docs/record-modes/new-episodes
     vcr_options = { :record => :new_episodes }
 
-    it '#get_user_repos', vcr: vcr_options do
-      expect(repos.first[:name].class).to be String
-      expect(repos.first[:id].class).to be Integer
-    end
-
-    it '#repos_list', vcr: vcr_options do
-      # [:name, :full_name, :id]
-      repos = github_service.repos_list
-      expect(repos.first[0].class).to be String
-      expect(repos.first[1].class).to be String
-      expect(repos.first[2].class).to be Integer
+    it 'user repos', vcr: vcr_options do
+      expect(github_service.repos.first[:name].class).to be String
+      expect(github_service.repos.first[:id].class).to be Integer
     end
 
     it '#find_repo_by_name', vcr: vcr_options do
