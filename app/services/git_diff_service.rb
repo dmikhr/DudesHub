@@ -11,11 +11,11 @@ class GitDiffService
   end
 
   def call
-    @files_info = filter_files(lines_with_file_paths)
-    patch_pos_start = @files_info.map { |line| patch_start_pos(line) }
+    patch_pos_start = lines_with_file_paths.map { |line| patch_start_pos(line) }
     # array with start and end positions for each patch
     @patches_pos = patch_pos_start.zip(patch_end_pos(patch_pos_start))
     slice_diff
+    @patches = @patches.select { |patch| allowed_patch?(patch) }
     @diff_data = @patches.map { |patch| fname_diff(patch) }
   end
 
@@ -26,9 +26,12 @@ class GitDiffService
     @patches = @patches_pos.map { |pos| @diff_lines[pos.first..pos.last] }
   end
 
-  def filter_files(lines)
-    filtered_files = lines.select { |line| extract_file_paths(line).last.end_with?(ALLOWED_EXTENSION) }
-    filtered_files.select { |line| !extract_file_paths(line).last.start_with?(*EXCLUDE_ROOT_FOLDERS) }
+  def allowed_patch?(patch)
+    fname_string = patch.first
+    extension_allowed = extract_file_paths(fname_string).last.end_with?(ALLOWED_EXTENSION)
+    folder_allowed = !extract_file_paths(fname_string).last.start_with?(*EXCLUDE_ROOT_FOLDERS)
+
+    extension_allowed && folder_allowed
   end
 
   def new_file?(patch)
@@ -66,7 +69,6 @@ class GitDiffService
 
     pos_end
   end
-
 
   def lines_with_file_paths
     @diff_lines.select { |line| line.scan(PATTERN_MATCH).any? }
