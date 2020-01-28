@@ -45,5 +45,10 @@ RSpec.describe GithubService, type: :service do
       pull_requests = github_service.get_pull_request('dmikhr/test_repo_dude', 1)
       expect(github_service.get_diff(pull_requests).class).to be String
     end
+
+    it '#get_repo_events', vcr: vcr_options do
+      repo_events = github_service.get_repo_events('dmikhr/test_repo_dude')
+      expect(repo_events.first[:id].class).to be String
+    end
   end
 end

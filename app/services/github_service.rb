@@ -34,6 +34,11 @@ class GithubService
     @client.pull_request(repo_full_name, pull_request_id)
   end
 
+  # https://www.rubydoc.info/gems/octokit/Octokit/Client/Events#repository_events-instance_method
+  def get_repo_events(repo_full_name)
+    @client.repository_events(repo_full_name)
+  end
+
   # https://developer.github.com/v3/guides/working-with-comments/
   # https://developer.github.com/v3/issues/comments/#create-a-comment
   # https://octokit.github.io/octokit.rb/Octokit/Client/Issues.html#add_comment-instance_method
