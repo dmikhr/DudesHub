@@ -1,7 +1,6 @@
 # use source code of gems to simplify their code editing (if improvements are needed or bugs are found)
-# in fthe inal version of app gems will be used
+# in the final version of app gems will be used
 require_relative "#{Rails.root}/#{Rails.application.credentials[:paths][:dudes]}"
-require_relative "#{Rails.root}/#{Rails.application.credentials[:paths][:dudegl]}"
 
 class ProcessCodeService
   def initialize(pull_request, file_data)
@@ -75,5 +74,4 @@ class ProcessCodeService
     return @file_data[:old_name] if branch == :master
     return @file_data[:new_name] if branch == :pull
   end
-
 end
