@@ -17,18 +17,18 @@ class ProcessCodeService
   private
 
   def process_code_file
-    download_master_code?
-    download_pull_request_code?
+    download_master_code
+    download_pull_request_code
   end
 
-  def download_master_code?
+  def download_master_code
     return unless [:deleted, :changed, :renamed].include?(@file_data[:status])
     code_master = DownloadService.call(code_master_branch_path)
     code_hash = Dudes::Calculator.new(code_master).call
     @params1 = code_hash.first unless code_hash.empty?
   end
 
-  def download_pull_request_code?
+  def download_pull_request_code
     return unless [:new, :changed, :renamed].include?(@file_data[:status])
     code_pull_request = DownloadService.call(code_pull_request_branch_path)
     code_hash = Dudes::Calculator.new(code_pull_request).call
