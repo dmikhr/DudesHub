@@ -6,7 +6,7 @@ RSpec.describe GitDiffService, type: :service do
   describe 'GitDiffService' do
     vcr_options = { :record => :new_episodes }
 
-    it '#call', vcr: vcr_options do
+    it '.call', vcr: vcr_options do
       expect(GitDiffService.call(diff).class).to be Array
       expect(GitDiffService.call(diff)).to_not be_empty
 
