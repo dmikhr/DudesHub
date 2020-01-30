@@ -15,6 +15,8 @@ class GitDiffService
       slice_diff
       @patches = @patches.select { |patch| allowed_patch?(patch) }
       @diff_data = @patches.map { |patch| fname_diff(patch) }
+      @diff_data += @patches.map { |patch| class_diff(patch) }
+      @diff_data.compact
     end
 
     private
@@ -44,6 +46,25 @@ class GitDiffService
       patch.select { |line| line.start_with?('rename from ') }.any?
     end
 
+    def class_renamed?(patch)
+      patch.select { |line| line.start_with?('-class') }.any? &&
+          patch.select { |line| line.start_with?('+class') }.any?
+    end
+
+    def old_class_name(patch)
+      res = patch.select { |line| line.start_with?('-class') }
+      return if res.empty?
+      line = res.first
+      line.split(' ').last.strip
+    end
+
+    def new_class_name(patch)
+      res = patch.select { |line| line.start_with?('+class') }
+      return if res.empty?
+      line = res.first
+      line.split(' ').last.strip
+    end
+
     def fname_diff(patch)
       # first line in patch contains info about file path
       file_path_line = patch.first
@@ -56,6 +77,11 @@ class GitDiffService
       # changed file without renaming
       return { old_name: extract_file_paths(file_path_line).first,
                new_name: extract_file_paths(file_path_line).last,  status: :changed }
+    end
+
+    def class_diff(patch)
+      return { old_name: old_class_name(patch),
+                         new_name: new_class_name(patch), status: :renamed_class } if class_renamed?(patch)
     end
 
     # end line index for current patch
