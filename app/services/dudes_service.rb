@@ -18,7 +18,7 @@ class DudesService
       return false if params_empty?
 
       dudes = DudeGl.new [@params1.flatten.compact, @params2.flatten.compact],
-                          dudes_per_row_max: 2, renamed: renamed, diff: true
+                          dudes_per_row_max: 4, renamed: renamed, diff: true
       dudes.render
 
       @img_url = UploadService.call(dudes.save_to_string, aws_fname)
@@ -39,7 +39,7 @@ class DudesService
     end
 
     def post_comment_on_pull_request_page
-      comment = "DudeGL diff analysis: #{@img_url}"
+      comment = "DudeGL diff analysis: ![](#{@img_url})"
       github_service = GithubService.new
       github_service.create_pull_request_comment(@pull_request[:head][:repo][:full_name],
                                                  @pull_request[:number], comment)
