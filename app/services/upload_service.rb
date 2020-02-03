@@ -16,7 +16,7 @@ class UploadService
       s3 = Aws::S3::Resource.new(client: client)
       obj = s3.bucket(credentials(:aws_bucket)).object(@object_key)
       # upload string in I/O stream, avoiding need to save it locally as tmp file
-      obj.put(body: data)
+      obj.put(body: data, content_type: "image/svg+xml")
       # make file public
       # https://docs.aws.amazon.com/sdkforruby/api/Aws/S3/Client.html#put_object_acl-instance_method
       client.put_object_acl(bucket: credentials(:aws_bucket),
