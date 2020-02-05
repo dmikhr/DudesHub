@@ -39,11 +39,29 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem "octokit", "~> 4.0"
 gem "aws-sdk-s3", require: false
 
+# Auth
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-github'
 
 gem 'slim-rails'
+
+# for Dudes gem
+gem 'parser'
+gem "ffast"
+gem "fast", require: false
+gem 'astrolabe'
+
+gem 'jquery-rails'
+gem 'bootstrap', '~> 4.4.1'
+
+gem 'sidekiq', '~> 5.1'
+# for Sidekiq interface
+gem 'sinatra', require: false
+
+gem 'whenever', require: false
+
+gem 'cancancan'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -70,6 +88,9 @@ group :test do
   gem 'webmock'
   gem 'vcr'
   gem 'shoulda-matchers'
+  gem 'launchy'
+  gem 'rails-controller-testing'
+  gem 'whenever-test'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
