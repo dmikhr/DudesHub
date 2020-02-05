@@ -37,3 +37,6 @@
 
 # VCR gem recordings
 /spec/cassettes/
+
+# Redis
+dump.rdb
