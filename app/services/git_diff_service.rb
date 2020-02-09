@@ -1,5 +1,3 @@
-require 'byebug'
-
 class GitDiffService
   class << self
     PATTERN_MATCH = /^diff --git\s/
