@@ -1,0 +1,8 @@
+-if current_user.present?
+  h3= "Monitored repositories"
+  p Click Disable in order to stop monitoring
+  -if @repos.present?
+    .repos
+      =render 'remove_from_monitor'
+  -else
+    p No monitored repositories

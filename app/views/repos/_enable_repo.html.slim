@@ -1,0 +1,3 @@
+tr class="repo"
+  td= repo.full_name
+  td= button_to 'Enable', add_to_monitored_repo_path(repo), class: "btn btn-primary", method: :patch

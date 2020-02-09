@@ -1,0 +1,8 @@
+-if current_user.present?
+  h3= "Not monitored repositories"
+  p Click Enable in order to start monitoring
+  -if @repos.present?
+    .repos
+      =render 'add_to_monitor'
+  -else
+    p All repositories are monitored

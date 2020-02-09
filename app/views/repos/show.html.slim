@@ -1,0 +1,12 @@
+-if current_user.present?
+  h3= "Pull requests for repository #{@repo[:name]}"
+  -if @pull_requests.present?
+    p Repository has open pull requests. Click on a pull request to analyze it.
+    ul class="list-group"
+    -@pull_requests.each do |pull_request|
+      li class="list-group-item"
+        =link_to "Analyze pull request ##{pull_request[:number]}", analyze_repo_pullrequest_path(@repo[:id], pull_request[:number])
+  -else
+    p No pull requests for this repository
+
+  =link_to 'Back', root_path
