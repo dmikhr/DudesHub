@@ -404,7 +404,6 @@ DEPENDENCIES
   factory_bot_rails
   fast
   ffast
-  i18n (= 1.8.1)
   jbuilder (~> 2.5)
   jquery-rails
   launchy
