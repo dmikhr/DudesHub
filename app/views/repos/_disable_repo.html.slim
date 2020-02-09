@@ -1,0 +1,3 @@
+tr class="repo"
+  td= repo.full_name
+  td= button_to 'Disable', remove_from_monitored_repo_path(repo), class: "btn btn-warning", method: :patch, data: { confirm: "Disable monitoring for #{repo.full_name}?" }

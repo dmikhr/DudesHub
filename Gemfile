@@ -36,6 +36,33 @@ gem 'jbuilder', '~> 2.5'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
+gem "octokit", "~> 4.0"
+gem "aws-sdk-s3", require: false
+
+# Auth
+gem 'devise'
+gem 'omniauth'
+gem 'omniauth-github'
+
+gem 'slim-rails'
+
+# for Dudes gem
+gem 'parser'
+gem "ffast"
+gem "fast", require: false
+gem 'astrolabe'
+
+gem 'jquery-rails'
+gem 'bootstrap', '~> 4.4.1'
+
+gem 'sidekiq', '~> 5.1'
+# for Sidekiq interface
+gem 'sinatra', require: false
+
+gem 'whenever', require: false
+
+gem 'cancancan'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -58,6 +85,12 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
+  gem 'webmock'
+  gem 'vcr'
+  gem 'shoulda-matchers'
+  gem 'launchy'
+  gem 'rails-controller-testing'
+  gem 'whenever-test'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

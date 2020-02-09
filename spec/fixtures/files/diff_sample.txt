@@ -1,0 +1,209 @@
+diff --git a/answers_code.rb b/answers_controller.rb
+similarity index 87%
+rename from answers_code.rb
+rename to answers_controller.rb
+index 243dcd5..80d4254 100644
+--- a/answers_code.rb
++++ b/answers_controller.rb
+@@ -11,14 +11,14 @@ class AnswersController < ApplicationController
+
+   def new; end
+
+-  def create
++  def create(param)
+     @answer = @question.answers.new(answer_params)
+     @answer.user = current_user
+     @answer.save
+   end
+
+   def destroy
+-    @answer.destroy
++    return @answer.destroy if true
+   end
+
+   def update
+@@ -26,7 +26,7 @@ def update
+     @question = @answer.question
+   end
+
+-  def select_best
++  def select_best(a, b)
+     @answer.select_best
+   end
+
+@@ -43,10 +43,6 @@ def publish_answer
+         )
+   end
+
+-  def set_question
+-    @question = Question.with_attached_files.find(params[:question_id])
+-  end
+-
+   def set_answer
+     @answer = Answer.with_attached_files.find(params[:id])
+   end
+diff --git a/code.rb b/code.rb
+index 1851c90..16c7d50 100644
+--- a/code.rb
++++ b/code.rb
+@@ -1,6 +1,6 @@
+ class DiffParams
+
+-  def initialize(params_list1, params_list2)
++  def initialize(params_list1, params_list2, opt= {})
+     @params_list1 = params_list1
+     @params_list2 = params_list2
+     @diff_params = []
+@@ -10,7 +10,7 @@ def initialize(params_list1, params_list2)
+
+   private
+
+-  def compare_params_lists
++  def compare_params_lists(flag, flag2)
+     new_params_names,
+     removed_params_names,
+     unchanged_params_names = items_diff(@params_list1, @params_list2)
+@@ -46,8 +46,8 @@ def compare
+     @diff1[:methods] << new_methods
+     @diff1[:methods] << removed_methods
+
+-    remove_empty_methods
+-    @diff[:methods].flatten!
++    return 0 if remove_empty_methods
++    return 1 if @diff[:methods].flatten!
+   end
+
+   # returns hash with method2 params and diff (e.g. args2 - args1)
+@@ -64,16 +64,6 @@ def compare_methods(method1, method2)
+   def items_diff(items1, items2)
+     items_names1 = items_names(items1)
+     items_names2 = items_names(items2)
+-
+-    new_items = items_names2 - items_names1
+-    removed_items = items_names1 - items_names2
+-    unchanged_items = items_names2 - new_items
+-
+-    [new_items, removed_items, unchanged_items]
+-  end
+-
+-  def items_names1(items)
+-    items.select { |item| item[:name] }
+   end
+
+   def find_item(items, name)
+@@ -81,18 +71,8 @@ def find_item(items, name)
+     item.first unless item.nil?
+   end
+
+-  def label_items(items, items_names, label)
+-    items_names.map { |item_name| label_item(items, item_name, label) }
+-  end
+-
+-  def process_unchanged_methods(unchanged_methods_names)
+-    unchanged_methods_names.each do |method_name|
+-      method1 = find_item(@params1[:methods], method_name)
+-      method2 = find_item(@params2[:methods], method_name)
+-      @diff[:methods] << compare_methods(method1, method2)
+-    end
+-
+-    unchanged_methods = label_items(@params1[:methods], unchanged_methods_names, 0)
++  def new_method(param)
++    puts 'new method'
+   end
+
+ end
+diff --git a/lib/data.txt b/lib/data.txt
+new file mode 100644
+index 0000000..87c387e
+--- /dev/null
++++ b/lib/data.txt
+@@ -0,0 +1,2 @@
++some text
++here
+diff --git a/lib/tests_controller.rb b/lib/tests_controller.rb
+new file mode 100644
+index 0000000..16ad593
+--- /dev/null
++++ b/lib/tests_controller.rb
+@@ -0,0 +1,29 @@
++class TestsController < ApplicationController
++
++  before_action :set_test, only: %i[start]
++
++  # обработка исключения для случая когда тест не был найден
++  rescue_from ActiveRecord::RecordNotFound, with: :rescue_with_test_not_found
++
++  # все тесты
++  def index
++    @tests = Test.all
++  end
++
++  def start
++    # объект текущего пользователя при старте прохождения теста
++    current_user.tests.push(@test)
++    # перенаправление на ресур прохождения теста
++    redirect_to current_user.test_passage(@test)
++  end
++
++  private
++
++  def set_test
++    @test = Test.find(params[:id])
++  end
++
++  def rescue_with_test_not_found
++    render plain: "Тест не найден"
++  end
++end
+diff --git a/links_controller.rb b/links_controller.rb
+new file mode 100644
+index 0000000..48688cd
+--- /dev/null
++++ b/links_controller.rb
+@@ -0,0 +1,19 @@
++class LinksController < ApplicationController
++  before_action :set_link, only: %i[destroy]
++
++  authorize_resource
++
++  def destroy
++    @link.destroy if current_user&.author_of?(@link.linkable)
++  end
++
++  private
++
++  def set_link
++    @link = Link.find(link_id)
++  end
++
++  def link_id
++    params.require(:id)
++  end
++end
+diff --git a/not_rb_file.yml b/not_rb_file.yml
+new file mode 100644
+index 0000000..ecd440e
+--- /dev/null
++++ b/not_rb_file.yml
+@@ -0,0 +1,3 @@
++entity:
++  name: Some
++  category: Industry
+diff --git a/upload_service.rb b/upload_service.rb
+deleted file mode 100644
+index a18306e..0000000
+--- a/upload_service.rb
++++ /dev/null
+@@ -1,8 +0,0 @@
+-require 'aws-sdk-s3'
+-
+-class UploadService
+-
+-  def s3_file_path
+-    "https://#{credentials(:aws_bucket)}.s3-#{credentials(:region)}.amazonaws.com/#{@object_key}"
+-  end
+-end
+diff --git a/model_user.rb b/user.rb
+similarity index 100%
+rename from model_user.rb
+rename to user.rb

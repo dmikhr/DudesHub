@@ -1,0 +1,6 @@
+table class="table table-striped w-50"
+  -@repos.each do |repo|
+    -if repo.monitored == true
+      =render 'disable_repo', repo: repo
+    -else
+      =render 'enable_repo', repo: repo

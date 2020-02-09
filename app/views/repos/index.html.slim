@@ -1,0 +1,8 @@
+-if current_user.present?
+  h3= "Github repositories for #{current_user.email}"
+  ul class="list-group"
+  -if @repos.present?
+    .repos
+      =render 'repos.html.slim'
+  -else
+    p No repositories in your account
