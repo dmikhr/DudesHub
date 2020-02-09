@@ -3,7 +3,7 @@ module FeatureHelpers
     visit new_user_session_path
 
     mock_auth_github(user.email)
-    
-    click_on 'Sign in with GitHub'
+
+    click_on 'Login with GitHub'
   end
 end

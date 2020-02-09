@@ -22,11 +22,21 @@ feature 'User can see the list of own repositories' do
         repos_other.each { |repo| expect(page).to_not have_content repo.full_name }
       end
     end
+
+    scenario 'User see nav bar' do
+      expect(page).to have_content 'Main page'
+    end
   end
 
-  scenario 'Guest see login page' do
-    visit root_path
+  context 'Guest' do
+    before { visit root_path }
 
-    expect(page).to have_content 'You need a Github account in order to login'
+    scenario 'Guest see login page' do
+      expect(page).to have_content 'You need a Github account in order to login'
+    end
+
+    scenario 'Guest cannot see nav bar' do
+      expect(page).to_not have_content 'Main page'
+    end
   end
 end
