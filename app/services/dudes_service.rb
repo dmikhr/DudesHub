@@ -1,7 +1,12 @@
 require 'securerandom'
 # use source code of gems to simplify their code editing (if improvements are needed or bugs are found)
 # in the final version of app gems will be used
-require_relative "#{Rails.root}/#{Rails.application.credentials[Rails.env.to_sym][:paths][:dudegl]}"
+# workaround for requiring source code of gems until they are officially released
+if Rails.env.to_sym == :production
+  require "#{Rails.root}/#{Rails.application.credentials[Rails.env.to_sym][:paths][:dudegl]}"
+else
+  require_relative "#{Rails.root}/#{Rails.application.credentials[Rails.env.to_sym][:paths][:dudegl]}"
+end
 
 class DudesService
   class << self
