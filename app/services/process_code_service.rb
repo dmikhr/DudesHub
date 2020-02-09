@@ -1,6 +1,6 @@
 # use source code of gems to simplify their code editing (if improvements are needed or bugs are found)
 # in the final version of app gems will be used
-require_relative "#{Rails.root}/#{Rails.application.credentials[:paths][:dudes]}"
+require_relative "#{Rails.root}/#{Rails.application.credentials[Rails.env.to_sym][:paths][:dudes]}"
 
 class ProcessCodeService
   def initialize(pull_request, file_data)
