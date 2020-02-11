@@ -11,7 +11,7 @@ class ReposController < ApplicationController
   # load/update repos from github to db
   def refresh
     update_user_repos
-    redirect_to root_path, notice: "Repositories were updated"
+    redirect_to root_path, notice: "Repositories list was updated"
   end
 
   def monitor
