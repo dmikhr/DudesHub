@@ -10,7 +10,7 @@ class MonitorService
       Repo.where(user: user, monitored: true).each do |repo|
         MonitorRepoService.call(repo.full_name, repo.updated_at)
         # update updated_at timestamp
-        Repo.update(repo_full_name: repo.full_name)
+        Repo.update(full_name: repo.full_name)
       end
     end
   end
