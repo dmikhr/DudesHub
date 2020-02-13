@@ -17,13 +17,13 @@ class MonitorRepoService
     end
 
     def get_newly_opened_pull_requests
-      @pull_requests_opened = @events.select { |event| event[:type] == "PullRequestEvent" &&
+      @pull_request_opened_events = @events.select { |event| event[:type] == "PullRequestEvent" &&
                                                        event[:payload][:action] == "opened" &&
                                                        event[:created_at] > @last_check_time }
     end
 
     def process_opened_pull_requests
-      @pull_requests_opened.each { |pull_request| DudeJob.perform_now(pull_request) }
+      @pull_request_opened_events.each { |pl_event| DudeJob.perform_now(pl_event[:payload][:pull_request]) }
     end
   end
 end
