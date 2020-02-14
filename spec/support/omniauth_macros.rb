@@ -5,7 +5,7 @@ module OmniauthMacros
     OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new({
       'provider' => :github,
       'uid' => '123545',
-      'info' => { 'email' => email }
+      'info' => { 'email' => email, 'nickname' => 'dmikhr' }
     })
   end
 end
