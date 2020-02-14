@@ -1,7 +1,7 @@
 -if current_user.present?
   =button_to 'Update', refresh_repos_path, class: "btn btn-info", method: :post
   span &nbsp;
-  h3= "Github repositories for #{current_user.email}"
+  h4= "Github repositories for #{current_user.nickname} (#{current_user.email})"
   ul class="list-group"
   -if @repos.present?
     .repos

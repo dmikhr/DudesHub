@@ -2,23 +2,13 @@
 # https://octokit.github.io/octokit.rb/Octokit/Client/PullRequests.html
 
 class GithubService
-  attr_reader :repos
 
   def initialize
     @client = octokit_client
-    @repos = @client.repositories(user_login)
   end
 
-  def find_repo_by_name(name)
-    # potentially useful keys: :full_name, :id, :private, [:owner][:login], :description, :html_url
-    repo = @repos.select { |repo| repo[:name] == name }
-    repo.first unless repo.empty?
-  end
-
-  def find_repo_by_id(id)
-    # potentially useful keys: :full_name, :id, :private, [:owner][:login], :description, :html_url
-    repo = @repos.select { |repo| repo[:id] == id }
-    repo.first unless repo.empty?
+  def get_user_repos(github_username)
+    @client.repositories(github_username)
   end
 
   # get a list of open pull request for a given repo
@@ -61,14 +51,10 @@ class GithubService
     DownloadService.call(diff_url)
   end
 
-  def user_login
-    @client.user[:login]
-  end
-
   private
 
   def octokit_client
-    client = Octokit::Client.new(access_token: access_token)
+    Octokit::Client.new(access_token: access_token)
   end
 
   def access_token

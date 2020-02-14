@@ -2,7 +2,6 @@ class ReposController < ApplicationController
   before_action :load_repos, only: :index
 
   authorize_resource
-  # skip_authorization_check
 
   def index
     @repos = current_user.repos.where(user: current_user)
@@ -42,13 +41,14 @@ class ReposController < ApplicationController
     Repo.find(id).repo_id
   end
 
-  def github_service
+  def get_current_user_repos
     @service = GithubService.new
-    @repos = @service.repos
+    @repos = @service.get_user_repos(current_user.nickname)
   end
 
   def update_user_repos
-    github_service
+    get_current_user_repos
+
     Repo.transaction do
       @repos.each { |repo| update_repository(repo) }
     end

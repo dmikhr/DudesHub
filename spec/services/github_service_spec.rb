@@ -6,20 +6,10 @@ RSpec.describe GithubService, type: :service do
   describe 'GithubService' do
     vcr_options = { :record => :new_episodes }
 
-    it 'user repos', vcr: vcr_options do
-      expect(github_service.repos.first[:name].class).to be String
-      expect(github_service.repos.first[:id].class).to be Integer
-    end
-
-    it '#find_repo_by_name', vcr: vcr_options do
-      repo = github_service.find_repo_by_name('test_repo_dude')
-      expect(repo[:name]).to eq 'test_repo_dude'
-      expect(repo[:id].class).to be Integer
-    end
-
-    it '#find_repo_by_id', vcr: vcr_options do
-      repo = github_service.find_repo_by_id(233369239)
-      expect(repo[:name]).to eq 'test_repo_dude'
+    it 'get_user_repos', vcr: vcr_options do
+      repos = github_service.get_user_repos('dmikhr')
+      expect(repos.first[:name].class).to be String
+      expect(repos.first[:id].class).to be Integer
     end
 
     it '#get_pull_requests', vcr: vcr_options do
